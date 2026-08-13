@@ -16,6 +16,7 @@ export default function About() {
   const writerBio = settings?.writerBio || siteConfig.writer.bio;
   const aboutContent = settings?.aboutContent || "";
   const avatarUrl = settings?.logoUrl || siteConfig.writer.avatarUrl;
+  const writerUsername = settings?.writerUsername || siteConfig.writer.username;
   const socialLinks = Array.isArray(settings?.socialLinks) ? settings.socialLinks : [];
 
   return (
