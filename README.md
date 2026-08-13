@@ -4,13 +4,11 @@ A full-stack personal writer website — publish stories, chapters, and announce
 let readers comment, message you, and build a following — built with a real database,
 real authentication, and real-time messaging (not a static prototype).
 
-> **Build status:** This is **Phase 4 of 6** of the full spec. Accounts, stories, chapters,
-> the reader, comments, favorites/bookmarks, real-time messaging, notifications,
-> announcements, and the full writer/admin dashboard are all fully functional end-to-end
-> against a real Postgres database and a live Socket.IO connection. Global search and
-> reader-facing profile/settings pages are being built in the final phases — their routes
-> currently render "coming soon" placeholders so the app never shows a button that does
-> nothing silently instead of navigating somewhere real. See **Roadmap** below.
+> **Build status:** This is **Phase 5 of 6** of the full spec. Everything through the
+> writer/admin dashboard is fully functional end-to-end, plus this phase adds the missing
+> footer, legal pages, error boundaries, offline detection, and an accessibility pass.
+> Global search and reader-facing profile/settings pages remain — their routes currently
+> render "coming soon" placeholders. See **Roadmap** below.
 
 ---
 
@@ -63,11 +61,19 @@ real authentication, and real-time messaging (not a static prototype).
   the owner account itself can't be suspended); comment moderation; announcement
   create/edit/delete/pin; site settings (name, description, writer bio, accent color,
   footer text) editable live by the owner and reflected via `GET /api/settings`.
+- ✅ **Footer**: logo, writer name/description, nav links, social links (only rendered
+  when configured — no fake/placeholder URLs), copyright, real Privacy Policy and Terms
+  of Service pages.
+- ✅ **Error handling & accessibility**: a React error boundary catches render crashes
+  instead of a blank white screen; an offline banner appears when the connection drops;
+  a proper 401/403 "Unauthorized" page instead of a silent redirect; a skip-to-content
+  link; keyboard-dismissible (Escape) messenger dialog with `role="dialog"`; visible focus
+  states site-wide; `prefers-reduced-motion` respected in the base stylesheet.
 
 ## What's not built yet (placeholder pages, honestly labeled)
 
-Global search and reader-facing profile/settings pages. These will arrive in the final
-phases — nothing about them is faked in the current build.
+Global search, the About/Meet the Writer page, and reader-facing profile/settings pages.
+These will arrive in the final phase — nothing about them is faked in the current build.
 
 ---
 
@@ -216,6 +222,6 @@ Builds the client to `client/dist` and generates the Prisma client.
 1. ✅ **Foundation** — schema, auth, config, favicon, responsive nav
 2. ✅ **Stories & Reading** — stories/chapters CRUD, story reader, comments, favorites/bookmarks
 3. ✅ **Social layer** — Messenger-style messaging, notifications, announcements
-4. ✅ **Writer/Admin Dashboard** — stats, story/user/comment management, site settings *(this delivery)*
-5. ⏳ Full ivory/ink visual polish pass, animations, error states, accessibility audit
-6. ⏳ Global search, reader profile/settings pages, final QA pass, deployment verification
+4. ✅ **Writer/Admin Dashboard** — stats, story/user/comment management, site settings
+5. ✅ **Polish pass** — footer, legal pages, error boundary, offline state, accessibility *(this delivery)*
+6. ⏳ Global search, About page, reader profile/settings pages, final QA pass, deployment verification
