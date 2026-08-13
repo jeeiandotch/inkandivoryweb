@@ -159,6 +159,8 @@ export async function updateSiteSettings(req, res) {
     goldColor,
     footerText,
     socialLinks,
+    privacyPolicy,
+    termsOfService,
   } = req.body;
   const data = {};
   if (siteName !== undefined) data.siteName = siteName;
@@ -171,6 +173,8 @@ export async function updateSiteSettings(req, res) {
   if (goldColor !== undefined) data.goldColor = goldColor;
   if (footerText !== undefined) data.footerText = footerText;
   if (socialLinks !== undefined) data.socialLinks = socialLinks;
+  if (privacyPolicy !== undefined) data.privacyPolicy = privacyPolicy;
+  if (termsOfService !== undefined) data.termsOfService = termsOfService;
 
   const settings = await prisma.siteSettings.upsert({
     where: { id: "singleton" },
