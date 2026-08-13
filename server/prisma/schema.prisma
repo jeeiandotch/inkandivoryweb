@@ -328,6 +328,7 @@ model SiteSettings {
   siteDescription   String   @default("Stories written in ink, memories preserved in ivory.")
   writerName        String   @default("The Writer")
   writerBio         String   @default("")
+  writerUsername    String   @default("writer")
   aboutContent      String   @default("")
   accentColor       String   @default("#a67c6d")
   primaryColor      String   @default("#7a2b40")
