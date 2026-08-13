@@ -23,8 +23,8 @@ import userRoutes from "./routes/user.routes.js";
 import announcementRoutes from "./routes/announcement.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import publicSettingsRoutes from "./routes/publicSettings.routes.js";
-// Additional route modules are mounted below as they are built out in later
-// phases: search, user-facing settings.
+import searchRoutes from "./routes/search.routes.js";
+import meRoutes from "./routes/me.routes.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -78,6 +78,8 @@ export function createApp() {
   app.use("/api/announcements", announcementRoutes);
   app.use("/api/admin", adminRoutes);
   app.use("/api/settings", publicSettingsRoutes);
+  app.use("/api/search", searchRoutes);
+  app.use("/api/me", meRoutes);
 
   // In production, this server also serves the built React client so the
   // whole app can run as a single Railway service (see railway.json).
