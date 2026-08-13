@@ -24,6 +24,17 @@ export default function MessengerWidget() {
     if (isAuthenticated) load();
   }, [isAuthenticated, load]);
 
+  // Lets other parts of the app (e.g. a "Message" button on a profile page)
+  // open the messenger directly on a specific conversation.
+  useEffect(() => {
+    const handler = (e) => {
+      setActive(e.detail);
+      setOpen(true);
+    };
+    window.addEventListener("ii:open-conversation", handler);
+    return () => window.removeEventListener("ii:open-conversation", handler);
+  }, []);
+
   // Close the dialog with Escape for keyboard users.
   useEffect(() => {
     if (!open) return;

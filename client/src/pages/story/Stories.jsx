@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from "react";
-import { fetchStories, fetchGenres } from "../api/stories.js";
-import StoryCard from "../components/StoryCard.jsx";
-import EmptyState from "../components/EmptyState.jsx";
-import LoadingGrid from "../components/LoadingGrid.jsx";
-import { siteConfig } from "../config/site.config.js";
+import { fetchStories, fetchGenres } from "../../api/stories.js";
+import StoryCard from "../../components/StoryCard.jsx";
+import EmptyState from "../../components/EmptyState.jsx";
+import LoadingGrid from "../../components/LoadingGrid.jsx";
+import { siteConfig } from "../../config/site.config.js";
 
 export default function Stories() {
   const [stories, setStories] = useState([]);

@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer.jsx";
-import ComingSoon from "./components/ComingSoon.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 import MessengerWidget from "./components/messenger/MessengerWidget.jsx";
 import OfflineBanner from "./components/OfflineBanner.jsx";
@@ -18,6 +17,10 @@ import StoryReader from "./pages/story/StoryReader.jsx";
 import Unauthorized from "./pages/Unauthorized.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
+import About from "./pages/About.jsx";
+import Search from "./pages/Search.jsx";
+import Profile from "./pages/Profile.jsx";
+import Settings from "./pages/Settings.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 export default function App() {
@@ -42,6 +45,8 @@ export default function App() {
           <Route path="/stories/:slug/read/:order" element={<StoryReader />} />
 
           <Route path="/announcements" element={<Announcements />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/terms" element={<Terms />} />
@@ -55,13 +60,13 @@ export default function App() {
             }
           />
 
-          {/* Placeholders — built out in the final phase */}
-          <Route path="/about" element={<ComingSoon title="About the Writer" />} />
+          {/* Final phase — real pages replacing earlier placeholders */}
+          <Route path="/about" element={<About />} />
           <Route
             path="/settings"
             element={
               <ProtectedRoute>
-                <ComingSoon title="Settings" />
+                <Settings />
               </ProtectedRoute>
             }
           />
@@ -69,7 +74,7 @@ export default function App() {
             path="/profile/:username"
             element={
               <ProtectedRoute>
-                <ComingSoon title="Profile" />
+                <Profile />
               </ProtectedRoute>
             }
           />

@@ -29,10 +29,13 @@ export default function Navbar() {
             >
               {item.label}
             </NavLink>
-          ))}
+            ))}
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
+          <Link to="/search" aria-label="Search" className="text-ink/60 hover:text-taupe-dark">
+            🔍
+          </Link>
           {isAuthenticated && <NotificationBell />}
           {isAuthenticated ? (
             <>
@@ -89,6 +92,9 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="border-t border-ink/10 bg-ivory px-5 py-4 md:hidden animate-fade-in">
           <nav className="flex flex-col gap-3">
+            <NavLink to="/search" onClick={() => setMobileOpen(false)} className="py-1.5 text-base text-ink/85">
+              Search
+            </NavLink>
             {siteConfig.nav.primary.map((item) => (
               <NavLink
                 key={item.path}
