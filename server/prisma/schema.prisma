@@ -337,6 +337,8 @@ model SiteSettings {
   faviconUrl        String?
   backgroundUrl     String?
   footerText        String   @default("")
+  privacyPolicy     String   @default("")
+  termsOfService    String   @default("")
   socialLinks       Json     @default("[]")
   updatedAt         DateTime @updatedAt
 }
