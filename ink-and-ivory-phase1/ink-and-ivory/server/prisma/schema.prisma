@@ -1,0 +1,336 @@
+// Ink & Ivory — Prisma Schema
+// Run `npm run prisma:migrate --workspace server` after editing this file.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ──────────────────────────────────────────────────────────────
+
+enum Role {
+  OWNER
+  ADMIN
+  READER
+}
+
+enum StoryStatus {
+  ONGOING
+  COMPLETED
+  HIATUS
+  COMING_SOON
+}
+
+enum ProfileVisibility {
+  PUBLIC
+  MEMBERS_ONLY
+  PRIVATE
+}
+
+enum MessagingPreference {
+  EVERYONE
+  NO_ONE
+}
+
+enum NotificationType {
+  NEW_MESSAGE
+  COMMENT_REPLY
+  STORY_COMMENT
+  ANNOUNCEMENT
+  STORY_UPDATE
+}
+
+// ─── Core Identity ──────────────────────────────────────────────────────
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  username        String   @unique
+  passwordHash    String
+  role            Role     @default(READER)
+  isSuspended     Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  profile         Profile?
+  settings        UserSettings?
+  stories         Story[]
+  chapters        Chapter[]        @relation("ChapterAuthor")
+  comments        Comment[]
+  commentLikes    CommentLike[]
+  favorites       Favorite[]
+  bookmarks       Bookmark[]
+  announcements   Announcement[]
+  sentMessages    Message[]        @relation("MessageSender")
+  conversations   ConversationMember[]
+  notifications   Notification[]
+  sessions        Session[]
+  blockedBy       Block[]          @relation("BlockedUser")
+  blocking        Block[]          @relation("BlockingUser")
+
+  @@index([role])
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  displayName String
+  bio         String   @default("")
+  avatarUrl   String?
+  joinedAt    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UserSettings {
+  id                       String              @id @default(cuid())
+  userId                   String              @unique
+  user                     User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  theme                    String              @default("ivory")
+  readingFontSize          Int                 @default(18)
+  readingMode              String              @default("light") // light | dark | sepia
+  readingWidth             String              @default("comfortable")
+  profileVisibility        ProfileVisibility   @default(PUBLIC)
+  messagingPreference      MessagingPreference @default(EVERYONE)
+  notifyOnComment          Boolean             @default(true)
+  notifyOnMessage          Boolean             @default(true)
+  notifyOnAnnouncement     Boolean             @default(true)
+  updatedAt                DateTime            @updatedAt
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  tokenHash String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Block {
+  id          String   @id @default(cuid())
+  blockerId   String
+  blocker     User     @relation("BlockingUser", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId   String
+  blocked     User     @relation("BlockedUser", fields: [blockedId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([blockerId, blockedId])
+}
+
+// ─── Stories ────────────────────────────────────────────────────────────
+
+model Story {
+  id               String      @id @default(cuid())
+  authorId         String
+  author           User        @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  title            String
+  slug             String      @unique
+  description      String
+  coverImageUrl    String?
+  genreId          String?
+  genre            Genre?      @relation(fields: [genreId], references: [id])
+  status           StoryStatus @default(ONGOING)
+  contentWarnings  String[]    @default([])
+  seriesName       String?
+  seriesOrder      Int?
+  viewCount        Int         @default(0)
+  isPublished      Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  chapters         Chapter[]
+  tags             StoryTag[]
+  comments         Comment[]
+  favorites        Favorite[]
+  bookmarks        Bookmark[]
+
+  @@index([authorId])
+  @@index([status])
+  @@index([isPublished])
+}
+
+model Chapter {
+  id           String   @id @default(cuid())
+  storyId      String
+  story        Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  authorId     String
+  author       User     @relation("ChapterAuthor", fields: [authorId], references: [id])
+  title        String
+  content      String
+  order        Int
+  readingTime  Int      @default(0) // minutes, computed on save
+  isPublished  Boolean  @default(false)
+  publishedAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([storyId, order])
+  @@index([storyId])
+}
+
+model Genre {
+  id      String  @id @default(cuid())
+  name    String  @unique
+  slug    String  @unique
+  stories Story[]
+}
+
+model Tag {
+  id      String     @id @default(cuid())
+  name    String     @unique
+  slug    String     @unique
+  stories StoryTag[]
+}
+
+model StoryTag {
+  storyId String
+  story   Story  @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  tagId   String
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([storyId, tagId])
+}
+
+model Favorite {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storyId   String
+  story     Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, storyId])
+}
+
+model Bookmark {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  storyId     String
+  story       Story    @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  chapterId   String?
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, storyId])
+}
+
+// ─── Comments ───────────────────────────────────────────────────────────
+
+model Comment {
+  id          String    @id @default(cuid())
+  storyId     String
+  story       Story     @relation(fields: [storyId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content     String
+  parentId    String?
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     Comment[] @relation("CommentReplies")
+  isDeleted   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  likes       CommentLike[]
+
+  @@index([storyId])
+  @@index([parentId])
+}
+
+model CommentLike {
+  id        String   @id @default(cuid())
+  commentId String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([commentId, userId])
+}
+
+// ─── Messaging ──────────────────────────────────────────────────────────
+
+model Conversation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members  ConversationMember[]
+  messages Message[]
+}
+
+model ConversationMember {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadAt     DateTime?
+  joinedAt       DateTime     @default(now())
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  content        String
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+}
+
+// ─── Announcements ──────────────────────────────────────────────────────
+
+model Announcement {
+  id        String   @id @default(cuid())
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  title     String
+  content   String
+  imageUrl  String?
+  isPinned  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isPinned])
+}
+
+// ─── Notifications ──────────────────────────────────────────────────────
+
+model Notification {
+  id        String            @id @default(cuid())
+  userId    String
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  message   String
+  link      String?
+  isRead    Boolean           @default(false)
+  createdAt DateTime          @default(now())
+
+  @@index([userId, isRead])
+}
+
+// ─── Site Settings (singleton row, editable from the admin dashboard) ───
+
+model SiteSettings {
+  id                String   @id @default("singleton")
+  siteName          String   @default("Ink & Ivory")
+  siteDescription   String   @default("Stories written in ink, memories preserved in ivory.")
+  writerName        String   @default("The Writer")
+  writerBio         String   @default("")
+  accentColor       String   @default("#a67c6d")
+  footerText        String   @default("")
+  socialLinks       Json     @default("{}")
+  updatedAt         DateTime @updatedAt
+}
