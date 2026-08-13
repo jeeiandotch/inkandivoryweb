@@ -207,6 +207,31 @@ export default function SiteSettingsTab() {
           </div>
         </section>
 
+        {/* ── Legal Pages ────────────────────────────────────── */}
+        <section className="card flex flex-col gap-4 p-5">
+          <h3 className="font-display text-base text-wine">Legal Pages</h3>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-ink/70">Privacy Policy</label>
+            <textarea
+              name="privacyPolicy"
+              value={form.privacyPolicy || ""}
+              onChange={handleChange}
+              rows={8}
+              className="input-field"
+            />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-medium text-ink/70">Terms of Service</label>
+            <textarea
+              name="termsOfService"
+              value={form.termsOfService || ""}
+              onChange={handleChange}
+              rows={8}
+              className="input-field"
+            />
+          </div>
+        </section>
+
         {error && <p className="text-sm text-rose-dusty">{error}</p>}
         {saved && <p className="text-sm text-taupe-dark">Saved ✓</p>}
 
