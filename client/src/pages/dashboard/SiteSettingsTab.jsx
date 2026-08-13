@@ -40,6 +40,7 @@ export default function SiteSettingsTab() {
         siteDescription: form.siteDescription,
         writerName: form.writerName,
         writerBio: form.writerBio,
+        writerUsername: form.writerUsername,
         aboutContent: form.aboutContent,
         primaryColor: form.primaryColor,
         secondaryColor: form.secondaryColor,
