@@ -163,6 +163,10 @@ export default function SiteSettingsTab() {
             <input name="writerName" value={form.writerName} onChange={handleChange} className="input-field" />
           </div>
           <div>
+            <div>
+            <label className="mb-1 block text-xs font-medium text-ink/70">Your Username</label>
+            <input name="writerUsername" value={form.writerUsername || ""} onChange={handleChange} className="input-field" />
+          </div>
             <label className="mb-1 block text-xs font-medium text-ink/70">Short Bio (shown under your name)</label>
             <textarea name="writerBio" value={form.writerBio} onChange={handleChange} rows={2} className="input-field" />
           </div>
