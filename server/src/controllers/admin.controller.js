@@ -1,5 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 import { ApiError } from "../utils/ApiError.js";
+import { publicUploadUrl } from "../middleware/upload.js";
 
 // GET /api/admin/overview
 export async function getOverview(req, res) {
@@ -144,13 +145,27 @@ export async function getSiteSettings(req, res) {
 
 // PATCH /api/admin/settings — owner only
 export async function updateSiteSettings(req, res) {
-  const { siteName, siteDescription, writerName, writerBio, accentColor, footerText, socialLinks } = req.body;
+  const {
+    siteName,
+    siteDescription,
+    writerName,
+    writerBio,
+    aboutContent,
+    primaryColor,
+    secondaryColor,
+    goldColor,
+    footerText,
+    socialLinks,
+  } = req.body;
   const data = {};
   if (siteName !== undefined) data.siteName = siteName;
   if (siteDescription !== undefined) data.siteDescription = siteDescription;
   if (writerName !== undefined) data.writerName = writerName;
   if (writerBio !== undefined) data.writerBio = writerBio;
-  if (accentColor !== undefined) data.accentColor = accentColor;
+  if (aboutContent !== undefined) data.aboutContent = aboutContent;
+  if (primaryColor !== undefined) data.primaryColor = primaryColor;
+  if (secondaryColor !== undefined) data.secondaryColor = secondaryColor;
+  if (goldColor !== undefined) data.goldColor = goldColor;
   if (footerText !== undefined) data.footerText = footerText;
   if (socialLinks !== undefined) data.socialLinks = socialLinks;
 
@@ -158,6 +173,42 @@ export async function updateSiteSettings(req, res) {
     where: { id: "singleton" },
     update: data,
     create: { id: "singleton", ...data },
+  });
+  res.json({ settings });
+}
+
+// POST /api/admin/settings/logo — owner only
+export async function uploadSiteLogo(req, res) {
+  if (!req.file) throw ApiError.badRequest("No image file was uploaded.");
+  const logoUrl = publicUploadUrl("site", req.file.filename);
+  const settings = await prisma.siteSettings.upsert({
+    where: { id: "singleton" },
+    update: { logoUrl },
+    create: { id: "singleton", logoUrl },
+  });
+  res.json({ settings });
+}
+
+// POST /api/admin/settings/favicon — owner only
+export async function uploadSiteFavicon(req, res) {
+  if (!req.file) throw ApiError.badRequest("No image file was uploaded.");
+  const faviconUrl = publicUploadUrl("site", req.file.filename);
+  const settings = await prisma.siteSettings.upsert({
+    where: { id: "singleton" },
+    update: { faviconUrl },
+    create: { id: "singleton", faviconUrl },
+  });
+  res.json({ settings });
+}
+
+// POST /api/admin/settings/background — owner only
+export async function uploadSiteBackground(req, res) {
+  if (!req.file) throw ApiError.badRequest("No image file was uploaded.");
+  const backgroundUrl = publicUploadUrl("site", req.file.filename);
+  const settings = await prisma.siteSettings.upsert({
+    where: { id: "singleton" },
+    update: { backgroundUrl },
+    create: { id: "singleton", backgroundUrl },
   });
   res.json({ settings });
 }

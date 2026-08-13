@@ -43,3 +43,30 @@ export async function updateSiteSettingsAdmin(payload) {
   const { data } = await api.patch("/admin/settings", payload);
   return data.settings;
 }
+
+export async function uploadSiteLogoAdmin(file) {
+  const formData = new FormData();
+  formData.append("logo", file);
+  const { data } = await api.post("/admin/settings/logo", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return data.settings;
+}
+
+export async function uploadSiteFaviconAdmin(file) {
+  const formData = new FormData();
+  formData.append("favicon", file);
+  const { data } = await api.post("/admin/settings/favicon", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return data.settings;
+}
+
+export async function uploadSiteBackgroundAdmin(file) {
+  const formData = new FormData();
+  formData.append("background", file);
+  const { data } = await api.post("/admin/settings/background", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return data.settings;
+}

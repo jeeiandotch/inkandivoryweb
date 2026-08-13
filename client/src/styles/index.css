@@ -3,18 +3,37 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Light-mode surfaces (not user-customizable) */
+    --c-ivory: 253 247 246;
+    --c-surface: 249 236 231;
+    --c-ink: 44 32 36;
+
+    /* Accent colors — overridden at runtime from Site Settings via SiteContext */
+    --c-primary: 122 43 64;
+    --c-secondary: 177 103 122;
+    --c-gold: 201 162 39;
+
+    --c-bg-image: none;
+  }
+
+  .dark {
+    --c-ivory: 26 19 22;
+    --c-surface: 41 30 34;
+    --c-ink: 240 230 227;
+  }
+
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: #fdf7f6;
-    background-image:
-      radial-gradient(circle at 12% 8%, rgba(201, 143, 146, 0.16), transparent 42%),
-      radial-gradient(circle at 88% 18%, rgba(201, 162, 39, 0.08), transparent 40%),
-      radial-gradient(circle at 80% 85%, rgba(122, 43, 64, 0.07), transparent 45%),
-      radial-gradient(circle at 5% 90%, rgba(201, 143, 146, 0.1), transparent 40%);
+    background-color: rgb(var(--c-ivory));
+    background-image: var(--c-bg-image);
+    background-size: cover;
+    background-position: center;
     background-attachment: fixed;
+    transition: background-color 0.3s ease;
   }
 
   h1, h2, h3, h4 {
@@ -22,12 +41,12 @@
   }
 
   ::selection {
-    background-color: #f3d0cd;
-    color: #5c1f30;
+    background-color: rgb(var(--c-secondary) / 0.35);
+    color: rgb(var(--c-ink));
   }
 
   :focus-visible {
-    outline: 2px solid #c9a227;
+    outline: 2px solid rgb(var(--c-gold));
     outline-offset: 2px;
   }
 }
@@ -42,16 +61,16 @@
     @apply inline-flex items-center justify-center rounded-full bg-wine px-6 py-2.5 text-sm font-medium text-ivory shadow-soft transition duration-200 hover:bg-wine-light hover:shadow-lift active:scale-[0.98];
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-full border border-gold/50 bg-white/70 px-6 py-2.5 text-sm font-medium text-wine backdrop-blur-sm transition duration-200 hover:bg-white hover:border-gold active:scale-[0.98];
+    @apply inline-flex items-center justify-center rounded-full border border-gold/50 bg-ivory/70 px-6 py-2.5 text-sm font-medium text-wine backdrop-blur-sm transition duration-200 hover:bg-ivory hover:border-gold active:scale-[0.98];
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-taupe-dark underline decoration-gold/50 underline-offset-4 transition hover:text-wine;
   }
   .card {
-    @apply rounded-2xl border border-taupe/15 bg-white/70 shadow-soft backdrop-blur-sm transition duration-200 hover:shadow-lift;
+    @apply rounded-2xl border border-taupe/15 bg-ivory/70 shadow-soft backdrop-blur-sm transition duration-200 hover:shadow-lift;
   }
   .input-field {
-    @apply w-full rounded-xl border border-taupe/20 bg-white/80 px-4 py-2.5 text-ink placeholder:text-ink/40 transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25;
+    @apply w-full rounded-xl border border-taupe/20 bg-ivory/80 px-4 py-2.5 text-ink placeholder:text-ink/40 transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25;
   }
   .page-divider {
     @apply my-10 flex items-center justify-center gap-3 text-gold;

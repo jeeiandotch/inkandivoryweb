@@ -197,14 +197,6 @@ function PreferencesSection({ preferences, onSaved, onError }) {
   return (
     <form onSubmit={submit} className="card flex max-w-md flex-col gap-4 p-5">
       <div>
-        <label className="mb-1 block text-xs font-medium text-ink/70">Reading Mode</label>
-        <select className="input-field" value={form.readingMode} onChange={(e) => setForm((f) => ({ ...f, readingMode: e.target.value }))}>
-          <option value="light">Light</option>
-          <option value="sepia">Sepia</option>
-          <option value="dark">Dark</option>
-        </select>
-      </div>
-      <div>
         <label className="mb-1 block text-xs font-medium text-ink/70">Reading Width</label>
         <select className="input-field" value={form.readingWidth} onChange={(e) => setForm((f) => ({ ...f, readingWidth: e.target.value }))}>
           <option value="narrow">Narrow</option>

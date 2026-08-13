@@ -92,7 +92,6 @@ model UserSettings {
   user                     User                @relation(fields: [userId], references: [id], onDelete: Cascade)
   theme                    String              @default("ivory")
   readingFontSize          Int                 @default(18)
-  readingMode              String              @default("light") // light | dark | sepia
   readingWidth             String              @default("comfortable")
   profileVisibility        ProfileVisibility   @default(PUBLIC)
   messagingPreference      MessagingPreference @default(EVERYONE)
@@ -329,8 +328,15 @@ model SiteSettings {
   siteDescription   String   @default("Stories written in ink, memories preserved in ivory.")
   writerName        String   @default("The Writer")
   writerBio         String   @default("")
+  aboutContent      String   @default("")
   accentColor       String   @default("#a67c6d")
+  primaryColor      String   @default("#7a2b40")
+  secondaryColor    String   @default("#c17b8f")
+  goldColor         String   @default("#c9a227")
+  logoUrl           String?
+  faviconUrl        String?
+  backgroundUrl     String?
   footerText        String   @default("")
-  socialLinks       Json     @default("{}")
+  socialLinks       Json     @default("[]")
   updatedAt         DateTime @updatedAt
 }

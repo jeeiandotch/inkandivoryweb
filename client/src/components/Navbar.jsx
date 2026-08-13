@@ -1,18 +1,35 @@
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import { useSite } from "../context/SiteContext.jsx";
 import { siteConfig } from "../config/site.config.js";
 import NotificationBell from "./NotificationBell.jsx";
 
 export default function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
+  const { settings, darkMode, toggleDarkMode } = useSite();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const siteName = settings?.siteName || siteConfig.siteName;
+
+  const DarkModeButton = ({ className = "" }) => (
+    <button
+      onClick={toggleDarkMode}
+      aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
+      className={`flex h-9 w-9 items-center justify-center rounded-full border border-gold/40 text-sm transition hover:bg-gold/10 ${className}`}
+    >
+      {darkMode ? "☀️" : "🌙"}
+    </button>
+  );
+
   return (
-    <header className="sticky top-0 z-40 border-b border-ink/10 bg-ivory/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-taupe/10 bg-ivory/85 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
-        <Link to="/" className="font-script text-2xl text-ink">
-          {siteConfig.siteName}
+        <Link to="/" className="flex items-center gap-2 font-script text-2xl text-ink">
+          {settings?.logoUrl && (
+            <img src={settings.logoUrl} alt="" className="h-8 w-8 rounded-full object-cover" />
+          )}
+          {siteName}
         </Link>
 
         {/* Desktop nav */}
@@ -33,6 +50,7 @@ export default function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-4 md:flex">
+          <DarkModeButton />
           <Link to="/search" aria-label="Search" className="text-ink/60 hover:text-taupe-dark">
             🔍
           </Link>
@@ -71,6 +89,7 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <div className="flex items-center gap-2 md:hidden">
+          <DarkModeButton />
           {isAuthenticated && <NotificationBell />}
           <button
             className="flex h-9 w-9 items-center justify-center rounded-full border border-ink/15"

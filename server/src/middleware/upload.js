@@ -14,7 +14,7 @@ const MAX_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 
 // Railway's build/deploy process doesn't always preserve empty folders that
 // only contain a .gitkeep file, so create them at runtime if missing.
-for (const subfolder of ["avatars", "covers", "announcements"]) {
+for (const subfolder of ["avatars", "covers", "announcements", "site"]) {
   const dir = path.join(UPLOADS_ROOT, subfolder);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
@@ -55,6 +55,7 @@ function makeUploader(subfolder) {
 export const uploadCover = makeUploader("covers");
 export const uploadAvatar = makeUploader("avatars");
 export const uploadAnnouncementImage = makeUploader("announcements");
+export const uploadSiteAsset = makeUploader("site");
 
 export function publicUploadUrl(subfolder, filename) {
   return `/uploads/${subfolder}/${filename}`;

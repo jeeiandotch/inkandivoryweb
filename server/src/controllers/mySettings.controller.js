@@ -17,7 +17,6 @@ export async function getMySettings(req, res) {
     preferences: {
       theme: full.settings?.theme,
       readingFontSize: full.settings?.readingFontSize,
-      readingMode: full.settings?.readingMode,
       readingWidth: full.settings?.readingWidth,
       notifyOnComment: full.settings?.notifyOnComment,
       notifyOnMessage: full.settings?.notifyOnMessage,
@@ -83,11 +82,10 @@ export async function uploadMyAvatar(req, res) {
 
 // PATCH /api/me/preferences
 export async function updateMyPreferences(req, res) {
-  const { theme, readingFontSize, readingMode, readingWidth, notifyOnComment, notifyOnMessage, notifyOnAnnouncement } = req.body;
+  const { theme, readingFontSize, readingWidth, notifyOnComment, notifyOnMessage, notifyOnAnnouncement } = req.body;
   const data = {};
   if (theme !== undefined) data.theme = theme;
   if (readingFontSize !== undefined) data.readingFontSize = Number(readingFontSize);
-  if (readingMode !== undefined) data.readingMode = readingMode;
   if (readingWidth !== undefined) data.readingWidth = readingWidth;
   if (notifyOnComment !== undefined) data.notifyOnComment = Boolean(notifyOnComment);
   if (notifyOnMessage !== undefined) data.notifyOnMessage = Boolean(notifyOnMessage);

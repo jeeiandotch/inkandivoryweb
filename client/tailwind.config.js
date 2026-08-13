@@ -6,35 +6,35 @@ export default {
     extend: {
       colors: {
         ivory: {
-          DEFAULT: "#fdf7f6",
-          50: "#fffbfa",
-          100: "#fdf1ef",
-          200: "#f9e2df",
-          300: "#f3d0cd",
+          DEFAULT: "rgb(var(--c-ivory) / <alpha-value>)",
+          50: "rgb(var(--c-ivory) / <alpha-value>)",
+          100: "rgb(var(--c-ivory) / <alpha-value>)",
+          200: "rgb(var(--c-surface) / <alpha-value>)",
+          300: "rgb(var(--c-surface) / <alpha-value>)",
         },
         ink: {
-          DEFAULT: "#2c2024",
-          light: "#4a363c",
-          soft: "#5c4750",
+          DEFAULT: "rgb(var(--c-ink) / <alpha-value>)",
+          light: "rgb(var(--c-ink) / <alpha-value>)",
+          soft: "rgb(var(--c-ink) / <alpha-value>)",
         },
         taupe: {
-          DEFAULT: "#b5677a",
-          light: "#c98f9d",
-          dark: "#7a2b40",
+          DEFAULT: "rgb(var(--c-secondary) / <alpha-value>)",
+          light: "rgb(var(--c-secondary) / <alpha-value>)",
+          dark: "rgb(var(--c-secondary) / <alpha-value>)",
         },
         rose: {
           dusty: "#c17b8f",
         },
         wine: {
-          DEFAULT: "#7a2b40",
-          light: "#9c4058",
-          dark: "#5c1f30",
+          DEFAULT: "rgb(var(--c-primary) / <alpha-value>)",
+          light: "rgb(var(--c-primary) / <alpha-value>)",
+          dark: "rgb(var(--c-primary) / <alpha-value>)",
         },
         gold: {
-          DEFAULT: "#c9a227",
-          light: "#e0c364",
+          DEFAULT: "rgb(var(--c-gold) / <alpha-value>)",
+          light: "rgb(var(--c-gold) / <alpha-value>)",
         },
-        parchment: "#f9ece7",
+        parchment: "rgb(var(--c-surface) / <alpha-value>)",
       },
       fontFamily: {
         serif: ["'Cormorant Garamond'", "'Playfair Display'", "Georgia", "serif"],
