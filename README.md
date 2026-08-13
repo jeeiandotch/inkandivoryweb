@@ -4,11 +4,10 @@ A full-stack personal writer website — publish stories, chapters, and announce
 let readers comment, message you, and build a following — built with a real database,
 real authentication, and real-time messaging (not a static prototype).
 
-> **Build status:** This is **Phase 5 of 6** of the full spec. Everything through the
-> writer/admin dashboard is fully functional end-to-end, plus this phase adds the missing
-> footer, legal pages, error boundaries, offline detection, and an accessibility pass.
-> Global search and reader-facing profile/settings pages remain — their routes currently
-> render "coming soon" placeholders. See **Roadmap** below.
+> **Build status: complete (6 of 6 phases).** Every feature described below is real and
+> functional against a live Postgres database — there are no fake buttons, mock data, or
+> silent dead ends anywhere in the app. See the **Testing checklist** near the bottom for
+> what to verify after you deploy.
 
 ---
 
@@ -69,11 +68,32 @@ real authentication, and real-time messaging (not a static prototype).
   a proper 401/403 "Unauthorized" page instead of a silent redirect; a skip-to-content
   link; keyboard-dismissible (Escape) messenger dialog with `role="dialog"`; visible focus
   states site-wide; `prefers-reduced-motion` respected in the base stylesheet.
+- ✅ **Global search** (`/search`): one query searches stories, people, tags, and genres
+  at once, with real empty states.
+- ✅ **About page**: writer bio, avatar, favorite genres, social links, and a "Say Hello"
+  CTA — pulls the live writer name/bio from the admin-editable site settings.
+- ✅ **Public profiles** (`/profile/:username`): bio, join date, role badge, a working
+  "Message" button that opens the floating messenger directly on that conversation, and
+  a "Block" button. Respects each user's profile-visibility setting.
+- ✅ **Full Settings page** (`/settings`): Account (email/username/password change, all
+  gated behind re-entering your current password), Profile (display name, bio, avatar
+  upload), Preferences (reading mode/width, notification toggles), Privacy (profile
+  visibility, who can message you), and a Danger Zone with a password-confirmed account
+  deletion flow.
 
-## What's not built yet (placeholder pages, honestly labeled)
+## What's not built yet
 
-Global search, the About/Meet the Writer page, and reader-facing profile/settings pages.
-These will arrive in the final phase — nothing about them is faked in the current build.
+Nothing from the original spec — every listed feature has a real, working implementation.
+A few things worth knowing for a production launch rather than a local demo:
+- Local file storage (the default) is ephemeral on Railway across redeploys — switch
+  `STORAGE_DRIVER` to a real Cloudinary setup before you rely on uploaded covers/avatars
+  surviving a redeploy (the driver is pluggable; only the multer storage layer would need
+  swapping for a Cloudinary SDK call).
+- The Privacy Policy and Terms of Service pages are clearly-labeled starter text, not
+  legal advice — replace them with real policies before opening the site to the public.
+- CSRF protection relies on `sameSite` cookies (appropriate for this same-origin
+  deployment); if you ever split the frontend to a different domain than the API, add an
+  explicit CSRF token flow.
 
 ---
 
@@ -223,5 +243,27 @@ Builds the client to `client/dist` and generates the Prisma client.
 2. ✅ **Stories & Reading** — stories/chapters CRUD, story reader, comments, favorites/bookmarks
 3. ✅ **Social layer** — Messenger-style messaging, notifications, announcements
 4. ✅ **Writer/Admin Dashboard** — stats, story/user/comment management, site settings
-5. ✅ **Polish pass** — footer, legal pages, error boundary, offline state, accessibility *(this delivery)*
-6. ⏳ Global search, About page, reader profile/settings pages, final QA pass, deployment verification
+5. ✅ **Polish pass** — footer, legal pages, error boundary, offline state, accessibility
+6. ✅ **Search & reader accounts** — global search, About page, public profiles, full settings *(this delivery — build complete)*
+
+## Testing checklist
+
+Run through this after you deploy (mirrors the spec's own acceptance checklist):
+
+- [ ] `npm install && npm run prisma:migrate -- --name init && npm run seed`, then `npm run dev`
+- [ ] Register a new reader account, log out, log back in
+- [ ] Edit your profile (display name, bio, avatar) in Settings
+- [ ] As the owner, create a story with a cover image and two chapters; publish it
+- [ ] Read the story: change font size, reading mode, and width; bookmark a chapter
+- [ ] Comment on the story, reply to your own comment from the reader account, like a comment
+- [ ] Message the owner from the reader's profile page; confirm the message appears in
+      real time without a page refresh (two browser windows, two accounts)
+- [ ] Post an announcement and pin it; confirm it shows on `/announcements`
+- [ ] Check the notification bell updates in real time when someone comments/messages you
+- [ ] Search for the story, the owner's username, and a genre from `/search`
+- [ ] As the owner, suspend the test reader account from the dashboard, then confirm that
+      account can no longer log in
+- [ ] Load the site on a real mobile device or a narrow browser window — check the nav,
+      reader, messenger, and dashboard all remain usable
+- [ ] Run `npm run build` and confirm it completes without errors
+- [ ] Turn your network off — confirm the offline banner appears
