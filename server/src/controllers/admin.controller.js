@@ -140,6 +140,9 @@ export async function getSiteSettings(req, res) {
     update: {},
     create: { id: "singleton" },
   });
+  if (!Array.isArray(settings.socialLinks)) {
+    settings.socialLinks = [];
+  }
   res.json({ settings });
 }
 
