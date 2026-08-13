@@ -46,6 +46,8 @@ export default function SiteSettingsTab() {
         goldColor: form.goldColor,
         footerText: form.footerText,
         socialLinks: form.socialLinks,
+        privacyPolicy: form.privacyPolicy,
+        termsOfService: form.termsOfService,
       });
       setForm(updated);
       flash();
