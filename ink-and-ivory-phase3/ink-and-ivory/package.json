@@ -1,0 +1,29 @@
+{
+  "name": "ink-and-ivory",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Ink & Ivory — a personal writer website with stories, comments, messaging, announcements, and a full admin dashboard.",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n SERVER,CLIENT -c blue,magenta \"npm run dev --workspace server\" \"npm run dev --workspace client\"",
+    "dev:server": "npm run dev --workspace server",
+    "dev:client": "npm run dev --workspace client",
+    "build": "npm run build --workspace client && npm run prisma:generate --workspace server",
+    "start": "npm run start --workspace server",
+    "prisma:generate": "npm run prisma:generate --workspace server",
+    "prisma:migrate": "npm run prisma:migrate --workspace server",
+    "prisma:deploy": "npm run prisma:deploy --workspace server",
+    "prisma:studio": "npm run prisma:studio --workspace server",
+    "seed": "npm run seed --workspace server",
+    "postinstall": "npm run prisma:generate --workspace server"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.18.0"
+  }
+}
