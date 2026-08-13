@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: #faf6ef;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(166, 124, 109, 0.04), transparent 40%),
+      radial-gradient(circle at 85% 60%, rgba(201, 143, 146, 0.05), transparent 45%);
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-ink;
+  }
+
+  ::selection {
+    background-color: #e8dcc3;
+    color: #241f1c;
+  }
+
+  :focus-visible {
+    outline: 2px solid #a67c6d;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-ink px-6 py-2.5 text-sm font-medium text-ivory shadow-soft transition hover:bg-ink-light active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full border border-ink/20 bg-transparent px-6 py-2.5 text-sm font-medium text-ink transition hover:bg-ink/5 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-taupe-dark underline decoration-taupe/40 underline-offset-4 transition hover:text-ink;
+  }
+  .card {
+    @apply rounded-2xl border border-ink/10 bg-white/60 shadow-soft backdrop-blur-sm;
+  }
+  .input-field {
+    @apply w-full rounded-xl border border-ink/15 bg-white/70 px-4 py-2.5 text-ink placeholder:text-ink/40 focus:border-taupe focus:outline-none focus:ring-2 focus:ring-taupe/30;
+  }
+  .page-divider {
+    @apply my-10 flex items-center justify-center gap-3 text-taupe/60;
+  }
+  .page-divider::before,
+  .page-divider::after {
+    content: "";
+    @apply h-px flex-1 bg-ink/10;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
