@@ -153,6 +153,7 @@ export async function updateSiteSettings(req, res) {
     siteDescription,
     writerName,
     writerBio,
+    writerUsername,
     aboutContent,
     primaryColor,
     secondaryColor,
