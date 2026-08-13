@@ -8,50 +8,58 @@
   }
 
   body {
-    background-color: #faf6ef;
+    background-color: #fdf7f6;
     background-image:
-      radial-gradient(circle at 20% 10%, rgba(166, 124, 109, 0.04), transparent 40%),
-      radial-gradient(circle at 85% 60%, rgba(201, 143, 146, 0.05), transparent 45%);
+      radial-gradient(circle at 12% 8%, rgba(201, 143, 146, 0.16), transparent 42%),
+      radial-gradient(circle at 88% 18%, rgba(201, 162, 39, 0.08), transparent 40%),
+      radial-gradient(circle at 80% 85%, rgba(122, 43, 64, 0.07), transparent 45%),
+      radial-gradient(circle at 5% 90%, rgba(201, 143, 146, 0.1), transparent 40%);
+    background-attachment: fixed;
   }
 
   h1, h2, h3, h4 {
-    @apply font-display text-ink;
+    @apply font-display text-wine;
   }
 
   ::selection {
-    background-color: #e8dcc3;
-    color: #241f1c;
+    background-color: #f3d0cd;
+    color: #5c1f30;
   }
 
   :focus-visible {
-    outline: 2px solid #a67c6d;
+    outline: 2px solid #c9a227;
     outline-offset: 2px;
   }
 }
 
+/* Page-level entrance animation — apply via the .page-enter wrapper class */
+.page-enter {
+  animation: fadeIn 0.5s ease-out;
+}
+
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-full bg-ink px-6 py-2.5 text-sm font-medium text-ivory shadow-soft transition hover:bg-ink-light active:scale-[0.98];
+    @apply inline-flex items-center justify-center rounded-full bg-wine px-6 py-2.5 text-sm font-medium text-ivory shadow-soft transition duration-200 hover:bg-wine-light hover:shadow-lift active:scale-[0.98];
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-full border border-ink/20 bg-transparent px-6 py-2.5 text-sm font-medium text-ink transition hover:bg-ink/5 active:scale-[0.98];
+    @apply inline-flex items-center justify-center rounded-full border border-gold/50 bg-white/70 px-6 py-2.5 text-sm font-medium text-wine backdrop-blur-sm transition duration-200 hover:bg-white hover:border-gold active:scale-[0.98];
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-taupe-dark underline decoration-taupe/40 underline-offset-4 transition hover:text-ink;
+    @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-medium text-taupe-dark underline decoration-gold/50 underline-offset-4 transition hover:text-wine;
   }
   .card {
-    @apply rounded-2xl border border-ink/10 bg-white/60 shadow-soft backdrop-blur-sm;
+    @apply rounded-2xl border border-taupe/15 bg-white/70 shadow-soft backdrop-blur-sm transition duration-200 hover:shadow-lift;
   }
   .input-field {
-    @apply w-full rounded-xl border border-ink/15 bg-white/70 px-4 py-2.5 text-ink placeholder:text-ink/40 focus:border-taupe focus:outline-none focus:ring-2 focus:ring-taupe/30;
+    @apply w-full rounded-xl border border-taupe/20 bg-white/80 px-4 py-2.5 text-ink placeholder:text-ink/40 transition focus:border-gold focus:outline-none focus:ring-2 focus:ring-gold/25;
   }
   .page-divider {
-    @apply my-10 flex items-center justify-center gap-3 text-taupe/60;
+    @apply my-10 flex items-center justify-center gap-3 text-gold;
   }
   .page-divider::before,
   .page-divider::after {
     content: "";
-    @apply h-px flex-1 bg-ink/10;
+    @apply h-px flex-1 bg-gradient-to-r from-transparent via-gold/40 to-transparent;
   }
 }
 

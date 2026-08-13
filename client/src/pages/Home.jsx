@@ -6,10 +6,10 @@ export default function Home() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div>
+    <div className="page-enter">
       <section className="mx-auto max-w-3xl px-5 py-24 text-center sm:py-32">
-        <p className="mb-4 text-taupe-dark">✒️ {siteConfig.tagline}</p>
-        <h1 className="font-display text-5xl leading-tight text-ink sm:text-6xl">{siteConfig.homepage.heroTitle}</h1>
+        <p className="mb-4 tracking-wide text-taupe-dark">✒️ {siteConfig.tagline}</p>
+        <h1 className="font-display text-5xl leading-tight text-wine sm:text-6xl">{siteConfig.homepage.heroTitle}</h1>
         <p className="mx-auto mt-5 max-w-md font-serif text-lg italic text-ink/70">
           {siteConfig.homepage.heroSubtitle}
         </p>
