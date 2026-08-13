@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer.jsx";
 import ComingSoon from "./components/ComingSoon.jsx";
 import { ProtectedRoute } from "./components/ProtectedRoute.jsx";
 import MessengerWidget from "./components/messenger/MessengerWidget.jsx";
+import OfflineBanner from "./components/OfflineBanner.jsx";
 import Home from "./pages/Home.jsx";
 import Login from "./pages/Login.jsx";
 import Register from "./pages/Register.jsx";
@@ -13,13 +15,23 @@ import StoryEditor from "./pages/dashboard/StoryEditor.jsx";
 import Stories from "./pages/story/Stories.jsx";
 import StoryDetail from "./pages/story/StoryDetail.jsx";
 import StoryReader from "./pages/story/StoryReader.jsx";
+import Unauthorized from "./pages/Unauthorized.jsx";
+import Privacy from "./pages/Privacy.jsx";
+import Terms from "./pages/Terms.jsx";
 import NotFound from "./pages/NotFound.jsx";
 
 export default function App() {
   return (
     <div className="flex min-h-screen flex-col">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-sm focus:text-ivory"
+      >
+        Skip to content
+      </a>
+      <OfflineBanner />
       <Navbar />
-      <main className="flex-1">
+      <main id="main-content" className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -30,6 +42,9 @@ export default function App() {
           <Route path="/stories/:slug/read/:order" element={<StoryReader />} />
 
           <Route path="/announcements" element={<Announcements />} />
+          <Route path="/unauthorized" element={<Unauthorized />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
 
           <Route
             path="/library"
@@ -40,7 +55,7 @@ export default function App() {
             }
           />
 
-          {/* Placeholders — built out in Phase 4+ */}
+          {/* Placeholders — built out in the final phase */}
           <Route path="/about" element={<ComingSoon title="About the Writer" />} />
           <Route
             path="/settings"
@@ -58,6 +73,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/dashboard"
             element={
@@ -86,6 +102,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
+      <Footer />
       <MessengerWidget />
     </div>
   );

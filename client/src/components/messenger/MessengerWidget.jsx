@@ -24,6 +24,16 @@ export default function MessengerWidget() {
     if (isAuthenticated) load();
   }, [isAuthenticated, load]);
 
+  // Close the dialog with Escape for keyboard users.
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("keydown", handleKey);
+    return () => document.removeEventListener("keydown", handleKey);
+  }, [open]);
+
   // Refresh the conversation list preview whenever any new message arrives,
   // so unread dots / last-message previews stay current even for threads
   // that aren't currently open.
@@ -57,7 +67,12 @@ export default function MessengerWidget() {
       {open && (
         <>
           {/* Desktop popover */}
-          <div className="fixed bottom-24 right-5 z-50 hidden h-[520px] w-[360px] flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-lift sm:flex animate-fade-in">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Messages"
+            className="fixed bottom-24 right-5 z-50 hidden h-[520px] w-[360px] flex-col overflow-hidden rounded-2xl border border-ink/10 bg-white shadow-lift sm:flex animate-fade-in"
+          >
             <PanelHeader onClose={() => setOpen(false)} />
             {active ? (
               <ConversationThread conversation={active} onBack={() => setActive(null)} />
@@ -67,7 +82,12 @@ export default function MessengerWidget() {
           </div>
 
           {/* Mobile full-screen */}
-          <div className="fixed inset-0 z-50 flex flex-col bg-white sm:hidden animate-fade-in">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Messages"
+            className="fixed inset-0 z-50 flex flex-col bg-white sm:hidden animate-fade-in"
+          >
             <PanelHeader onClose={() => setOpen(false)} />
             {active ? (
               <ConversationThread conversation={active} onBack={() => setActive(null)} />
