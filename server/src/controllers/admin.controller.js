@@ -168,6 +168,7 @@ export async function updateSiteSettings(req, res) {
   if (siteDescription !== undefined) data.siteDescription = siteDescription;
   if (writerName !== undefined) data.writerName = writerName;
   if (writerBio !== undefined) data.writerBio = writerBio;
+  if (writerUsername !== undefined) data.writerUsername = writerUsername;
   if (aboutContent !== undefined) data.aboutContent = aboutContent;
   if (primaryColor !== undefined) data.primaryColor = primaryColor;
   if (secondaryColor !== undefined) data.secondaryColor = secondaryColor;
